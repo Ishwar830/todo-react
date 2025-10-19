@@ -31,8 +31,8 @@ function App() {
 
    function onDeleteCategory(categoryID) {
       const newList = categoryList.filter((cat) => cat.uid !== categoryID);
-      if(!newList.length){
-         alert("Cannot delete last category.");
+      if (!newList.length) {
+         alert('Cannot delete last category.');
          return;
       }
       setCategoryList(newList);
@@ -68,6 +68,7 @@ function App() {
             handleCategoryFormData={handleCategoryFormData}
          ></SidePanel>
          <MainPanel
+            key={currentCategoryID}
             handleCategoryFormData={handleCategoryFormData}
             onTaskSelect={onTaskSelect}
             currentCategory={currentCategory}

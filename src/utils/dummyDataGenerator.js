@@ -3,6 +3,24 @@ import Category from './category';
 
 const priorities = ['low', 'medium', 'high'];
 
+const startDate = new Date(2000, 0, 1);
+const endDate = new Date(2020, 12, 31);
+
+
+function generateRandomName(namelength){
+   let name = "";
+   const letterString = "abcdefghijklmnopqrstuvwxyz";
+   
+   for(let i=0; i<namelength; ++i) name += letterString[Math.floor(Math.random() * letterString.length)]
+   return name;
+}
+
+function randomDate(start = startDate, end = endDate) {
+   return new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+   );
+}
+
 function generateCheckList(size) {
    return Array.from({ length: size }, (_, i) => `Checkpoint ${i}`);
 }
@@ -10,11 +28,12 @@ function generateCheckList(size) {
 function generateTaskList(size, categoryID) {
    const taskList = Array.from({ length: size }, (_, i) => {
       const task = new Task({
-         name: `Task-${i}`,
+         name: generateRandomName(5),
          priority: priorities[Math.floor(Math.random() * priorities.length)],
          isComplete: i % 3 === 0,
          checkList: generateCheckList(Math.floor(Math.random() * size)),
          categoryID,
+         dueDate: randomDate(),
       });
       return task;
    });

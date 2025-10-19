@@ -11,7 +11,7 @@ function TaskInfo({ task }) {
       <>
          <p className="text-2xl font-bold">Title: {task.name}</p>
          <p>Priority: {task.priority}</p>
-         <p>Due-Date: {task.dueDate}</p>
+         <p>Due-Date: {task.dueDate.toDateString()}</p>
          <div className="flex-1 rounded-xl border-2 p-1">
             <p className="border-b-2 text-xl">CheckList</p>
             <CheckList checkList={task.checkList}></CheckList>

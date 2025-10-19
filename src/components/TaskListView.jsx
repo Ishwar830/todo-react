@@ -10,7 +10,7 @@ function TaskItem({ task, onTaskSelect }) {
                   readOnly
                   className="size-4"
                   type="checkbox"
-                  id="taskProgress"
+                  name="taskProgress"
                   checked={task.isComplete}
                />
                <span className="ml-1 text-xl">{task.name}</span>
@@ -26,7 +26,7 @@ function TaskItem({ task, onTaskSelect }) {
          </div>
          <div className="flex gap-2">
             <p>Priority: {task.priority}</p>
-            <p>Due Date: {task.dueDate}</p>
+            <p>Due Date: {task.dueDate.toDateString()}</p>
          </div>
       </li>
    );
