@@ -10,6 +10,7 @@ function TaskItem({ task, onTaskSelect }) {
                   readOnly
                   className="size-4"
                   type="checkbox"
+                  id="taskProgress"
                   checked={task.isComplete}
                />
                <span className="ml-1 text-xl">{task.name}</span>

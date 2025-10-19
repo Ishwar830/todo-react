@@ -1,34 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 
-function CategoryForm({handleCategoryFormData, closeDialog }) {
-   const [categoryName, setCategoryName] = useState("");
+function CategoryForm({ handleCategoryFormData, initialData = null }) {
+   const [categoryName, setCategoryName] = useState('');
+   
+   useEffect(() => {
+      if (initialData) {
+         setCategoryName(initialData.category.name);
+      } else {
+         setCategoryName('');
+      }
+   }, [initialData]);
 
    function handleInputChange(e) {
       setCategoryName(e.target.value);
    }
 
-   function resetFormData(){
-      setCategoryName("");
+   function resetFormData() {
+      setCategoryName('');
    }
 
    function handleFormSubmit() {
+      if (!categoryName) return;
       const formData = {
-         categoryName,
-         mode: "add"
-      }
+         newData: {
+            categoryName,
+         },
+         initialData,
+      };
       handleCategoryFormData(formData);
-      closeForm();
-   }
-
-   function closeForm(){
       resetFormData();
-      closeDialog();
    }
 
    return (
       <form
          onSubmit={handleFormSubmit}
          action="#"
+         method="dialog"
          className="grid h-[max-content] w-[250px] gap-4 rounded-xl border-2 bg-white p-5"
       >
          <div>
@@ -46,18 +53,10 @@ function CategoryForm({handleCategoryFormData, closeDialog }) {
          </div>
          <div className="flex gap-4">
             <button
-               type="button"
-               onClick={handleFormSubmit}
+               type="submit"
                className="flex-1 rounded-xl border-2 bg-slate-100 p-2"
             >
                Submit
-            </button>
-            <button
-               type="button"
-               onClick={closeForm}
-               className="flex-1 rounded-xl border-2 bg-slate-100 p-2"
-            >
-               Close
             </button>
          </div>
       </form>

@@ -1,12 +1,34 @@
+import CategoryForm from './CategoryForm';
+import DialogModalTriggerButton from './DialogModalTriggerButton';
 
-
-function CategoryInfo({ category }) {
+function EditCategoryButton({ handleCategoryFormData, initialData }) {
+   const buttonLabel = 'Edit';
+   const butttonStyles = 'bg-slate-800 rounded-xs w-16 h-8 text-white';
    return (
-      <div className="flex items-center justify-between flex-wrap min-h-1/10 gap-4">
-         <h1 className="text-4xl font-mono font-bold">{category.name}</h1>
+      <DialogModalTriggerButton
+         buttonLabel={buttonLabel}
+         buttonStyles={butttonStyles}
+      >
+         <CategoryForm
+            handleCategoryFormData={handleCategoryFormData}
+            initialData={initialData}
+         ></CategoryForm>
+      </DialogModalTriggerButton>
+   );
+}
+
+function CategoryInfo({ category, handleCategoryFormData, onDeleteCategory }) {
+   return (
+      <div className="flex min-h-1/10 flex-wrap items-center justify-between gap-4">
+         <h1 className="font-mono text-4xl font-bold">{category.name}</h1>
          <div className="flex gap-4">
-            <button className="bg-slate-800 rounded-xs w-16 h-8 text-white">Delete</button>
-            <button className="bg-slate-800 rounded-xs w-16 h-8 text-white">Edit</button>
+            <button onClick={() => onDeleteCategory(category.uid)} className="h-8 w-16 rounded-xs bg-slate-800 text-white">
+               Delete
+            </button>
+            <EditCategoryButton
+               handleCategoryFormData={handleCategoryFormData}
+               initialData={{category}}
+            ></EditCategoryButton>
          </div>
       </div>
    );
