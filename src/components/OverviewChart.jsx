@@ -1,0 +1,32 @@
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+function OverviewChart({ category }) {
+   const completedTaskCount = category.getCompletedTaskCount();
+   const dueTaskCount = category.taskList.length - completedTaskCount;
+   const chartData = {
+      labels: ["Completed", "Due"],
+      datasets: [
+         {
+            data: [completedTaskCount, dueTaskCount],
+            backgroundColor: ["#2ECC71", "#E74C3C"],
+            hoverOffset: 4,
+         },
+      ],
+   };
+
+   return (
+      <div className="grid content-start gap-4 rounded-2xl bg-white p-4 shadow-xl/20">
+         <p className="text-xl font-bold">Task-List Overview</p>
+         <Doughnut width={200} height={200} data={chartData}/>
+         <div>
+            <p>Task Completed: {completedTaskCount}</p>
+            <p>Task Due: {dueTaskCount}</p>
+         </div>
+      </div>
+   );
+}
+
+export default OverviewChart;
