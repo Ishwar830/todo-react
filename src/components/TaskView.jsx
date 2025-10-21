@@ -3,7 +3,7 @@ function CheckList({ checkList = [] }) {
       <li key={index}>{checkPoint}</li>
    ));
 
-   return <ul>{list}</ul>;
+   return <ul className="overflow-auto">{list}</ul>;
 }
 
 function TaskInfo({ task }) {
@@ -22,7 +22,7 @@ function TaskInfo({ task }) {
 
 function TaskView({ task }) {
    return (
-      <div className="flex flex-col gap-2 rounded-2xl bg-white p-4 shadow-xl/20">
+      <div className="flex flex-1 flex-col gap-2 rounded-2xl bg-white p-4 shadow-xl/20">
          {task ? (
             <TaskInfo task={task}></TaskInfo>
          ) : (

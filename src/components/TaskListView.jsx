@@ -1,7 +1,7 @@
-import DialogModalTriggerButton from "./DialogModalTriggerButton";
-import TaskForm from "./TaskForm";
+import DialogModalTriggerButton from './DialogModalTriggerButton';
+import TaskForm from './TaskForm';
 
-function EditTaskButton({task, handleTaskFormData}){
+function EditTaskButton({ task, handleTaskFormData }) {
    const buttonLabel = 'Edit';
    const butttonStyles = 'w-16 rounded-xs bg-gray-800 p-1 text-white';
    return (
@@ -17,53 +17,78 @@ function EditTaskButton({task, handleTaskFormData}){
    );
 }
 
-
 function TaskItem({ task, onTaskSelect, onDeleteTask, handleTaskFormData }) {
-   
-   function handleTaskDelete(e){
+   const priorityThemeColors = {
+      low: 'bg-emerald-100 text-emerald-700',
+      medium: 'bg-amber-100 text-amber-700',
+      high: 'bg-red-100 text-red-700',
+   };
+
+   function handleTaskDelete(e) {
       e.stopPropagation();
       onDeleteTask(task.uid);
    }
-   
+
    return (
       <li
-         className="grid rounded-xl border-2 bg-neutral-100 p-4 shadow-md/20"
+         className="grid gap-2 rounded-xl border-2 bg-neutral-100 p-4 shadow-md/20"
          onClick={() => onTaskSelect(task.uid)}
       >
          <div className="flex items-center justify-between gap-4">
-            <div>
+            <div className='flex items-center gap-4'>
                <input
                   readOnly
-                  className="size-4"
+                  className="size-6"
                   type="checkbox"
                   name="taskProgress"
                   checked={task.isComplete}
-                  onClick={(e) =>{
+                  onClick={(e) => {
                      e.stopPropagation();
                      handleTaskFormData({
                         initialData: task,
-                        newData: {...task, isComplete:!task.isComplete}
-                     })
+                        newData: { ...task, isComplete: !task.isComplete },
+                     });
                   }}
                />
-               <span className="ml-1 text-xl">{task.name}</span>
+               <span className="text-2xl font-bold font-mono tracking-wide">{task.name}</span>
             </div>
             <div className="flex gap-2">
-               <EditTaskButton task={task} handleTaskFormData={handleTaskFormData}></EditTaskButton>
-               <button onClick={handleTaskDelete} className="w-16 rounded-xs bg-gray-800 p-1 text-white">
+               <EditTaskButton
+                  task={task}
+                  handleTaskFormData={handleTaskFormData}
+               ></EditTaskButton>
+               <button
+                  onClick={handleTaskDelete}
+                  className="w-16 rounded-xs bg-gray-800 p-1 text-white"
+               >
                   Delete
                </button>
             </div>
          </div>
-         <div className="flex gap-2">
-            <p>Priority: {task.priority}</p>
-            <p>Due Date: {task.dueDate.toDateString()}</p>
+         <div className="flex flex-wrap gap-4">
+            <p>
+               Priority:{' '}
+               <span className={priorityThemeColors[task.priority] + " p-1"}>
+                  {task.priority}
+               </span>
+            </p>
+            <p>
+               Due Date:{' '}
+               <span className="inline-block bg-slate-300 p-1">
+                  {task.dueDate.toDateString()}
+               </span>
+            </p>
          </div>
       </li>
    );
 }
 
-function TaskListView({ taskList, onTaskSelect, onDeleteTask, handleTaskFormData }) {
+function TaskListView({
+   taskList,
+   onTaskSelect,
+   onDeleteTask,
+   handleTaskFormData,
+}) {
    const listItems = taskList.map((task) => (
       <TaskItem
          key={task.uid}
@@ -73,7 +98,11 @@ function TaskListView({ taskList, onTaskSelect, onDeleteTask, handleTaskFormData
          handleTaskFormData={handleTaskFormData}
       ></TaskItem>
    ));
-   return <ul className="grid gap-4">{listItems}</ul>;
+   return (
+      <ul className="grid flex-1 content-start gap-4 overflow-auto">
+         {listItems}
+      </ul>
+   );
 }
 
 export default TaskListView;

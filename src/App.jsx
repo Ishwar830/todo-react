@@ -98,7 +98,7 @@ function App() {
    }
 
    return (
-      <div className="relative grid min-h-dvh grid-cols-[250px_1fr_300px]">
+      <div className="relative grid grid-cols-[250px_1fr_300px]">
          <SidePanel
             categoryList={categoryList}
             currentCategoryID={currentCategoryID}

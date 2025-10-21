@@ -14,7 +14,7 @@ function MainPanel({
 }) {
    return (
       <>
-         <div className="grid grid-rows-[auto_1fr] p-5">
+         <div className="flex flex-col p-5 h-dvh">
             <CategoryInfo
                category={currentCategory}
                handleCategoryFormData={handleCategoryFormData}

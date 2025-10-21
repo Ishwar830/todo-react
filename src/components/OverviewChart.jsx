@@ -18,9 +18,13 @@ function OverviewChart({ currentTaskList}) {
    };
 
    return (
-      <div className="grid content-start gap-4 rounded-2xl bg-white p-4 shadow-xl/20">
+      <div className="grid flex-1 content-start gap-4 rounded-2xl bg-white p-4 shadow-xl/20">
          <p className="text-xl font-bold">Task-List Overview</p>
-         <Doughnut width={200} height={200} data={chartData}/>
+         <Doughnut
+            width={100}
+            height={100}
+            data={chartData}
+         />
          <div>
             <p>Task Completed: {completedTaskCount}</p>
             <p>Task Due: {dueTaskCount}</p>

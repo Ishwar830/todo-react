@@ -19,8 +19,8 @@ function EditCategoryButton({ handleCategoryFormData, initialData }) {
 
 function CategoryInfo({ category, handleCategoryFormData, onDeleteCategory }) {
    return (
-      <div className="flex min-h-1/10 flex-wrap items-center justify-between gap-4">
-         <h1 className="font-mono text-4xl font-bold">{category.name}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+         <h1 className="font-mono text-4xl font-bold tracking-widest">{category.name}</h1>
          <div className="flex gap-4">
             <button onClick={() => onDeleteCategory(category.uid)} className="h-8 w-16 rounded-xs bg-slate-800 text-white">
                Delete

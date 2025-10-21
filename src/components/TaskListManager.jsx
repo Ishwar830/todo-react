@@ -24,7 +24,7 @@ const sortFn = {
 function AddTaskButton({handleTaskFormData}) {
    const buttonLabel = 'Add Task';
    const butttonStyles =
-      'rounded-md shadow-md/40 shadow-gray-800 bg-slate-100 p-2 text-md transition-transform hover:scale-105 hover:bg-slate-300 my-2';
+      'self-start rounded-md m-2 shadow-md/40 shadow-slate-200 bg-emerald-400 p-2 text-md transition-transform hover:scale-105 hover:bg-emerald-500';
    return (
       <DialogModalTriggerButton
          buttonLabel={buttonLabel}
@@ -57,7 +57,7 @@ function TaskListManager({
 
    return (
       <>
-         <div>
+         <div className='flex-1 flex flex-col overflow-hidden'>
             <TaskListModifier
                updateSearchString={updateSearchString}
                updateSortOption={updateSortOption}

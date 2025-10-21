@@ -6,10 +6,10 @@ function Category({ category, currentCategoryID, onCategorySelect }) {
    return (
       <li
          onClick={() => onCategorySelect(category.uid)}
-         className={`flex items-center justify-between gap-3 p-2 ${isSelected && selectedCategoryStyles}`}
+         className={`flex overflow-hidden items-center justify-between gap-3 p-2 ${isSelected && selectedCategoryStyles}`}
       >
-         <span className="ml-4 text-xl">{category.name}</span>
-         <span className="mr-4 flex h-8 w-8 items-center justify-center rounded-full bg-black text-white">
+         <span className="flex-1 text-xl overflow-hidden text-ellipsis">{category.name}</span>
+         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white">
             {category.taskList.length}
          </span>
       </li>
@@ -28,7 +28,7 @@ function CategoryList({ onCategorySelect, categoryList, currentCategoryID }) {
       );
    });
 
-   return <ul className="grid gap-3 p-4">{list}</ul>;
+   return <ul className="overflow-auto p-2 flex-1">{list}</ul>;
 }
 
 export default CategoryList;
