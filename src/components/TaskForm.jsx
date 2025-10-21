@@ -19,6 +19,7 @@ const defaultTaskData = {
 function CheckListEditor({ onTaskDataChange, taskData }) {
    const [checkpointInput, setCheckpointInput] = useState('');
    const checkList = taskData.checkList;
+
    function onCheckPointDelete(deleteIndex) {
       const newCheckList = checkList.filter(
          (_, index) => index !== deleteIndex
@@ -34,7 +35,7 @@ function CheckListEditor({ onTaskDataChange, taskData }) {
    }
 
    return (
-      <div>
+      <div className='h-[200px] flex flex-col'>
          <input
             className="border-2"
             onChange={(e) => setCheckpointInput(e.target.value)}
@@ -48,15 +49,13 @@ function CheckListEditor({ onTaskDataChange, taskData }) {
          >
             Add Checkpoint
          </button>
-         <ul className="mt-2 border-2 border-slate-400 p-2 grid gap-2">
+         <ul className="mt-2 grid gap-2 flex-1 border-2 border-slate-400 p-2 overflow-auto">
             {checkList.map((checkPoint, index) => {
                return (
-                  <li
-                     className="flex justify-between text-wrap"
-                     key={index}
-                  >
+                  <li className="flex justify-between text-wrap" key={index}>
                      {checkPoint}
                      <button
+                        type="button"
                         className="size-8 rounded-full bg-red-400"
                         onClick={() => onCheckPointDelete(index)}
                      >
@@ -70,21 +69,31 @@ function CheckListEditor({ onTaskDataChange, taskData }) {
    );
 }
 
-function TaskForm({ handleTaskFormData, initialData = defaultTaskData }) {
-   const dataCopy = { ...initialData };
-   dataCopy.checkList = [...initialData.checkList];
+function TaskForm({ handleTaskFormData, initialData }) {
+   const data = initialData || defaultTaskData;
+   const dataCopy = { ...data };
+   dataCopy.checkList = [...data.checkList];
+   
    const [taskData, setTaskData] = useState(dataCopy);
-   console.log(initialData);
-   console.log(taskData);
 
    function onTaskDataChange(newData) {
       setTaskData({ ...taskData, ...newData });
+   }
+
+   function handleFormSubmit(){
+      if (!taskData.name.trim()) return;
+      const formData = {
+         newData: taskData,
+         initialData,
+      };
+      handleTaskFormData(formData);
    }
 
    return (
       <form
          action="#"
          method="dialog"
+         onSubmit={handleFormSubmit}
          className="grid h-[max-content] w-[280px] gap-4 p-4"
       >
          <div className="flex justify-between gap-2 bg-slate-200 p-2">
@@ -138,6 +147,11 @@ function TaskForm({ handleTaskFormData, initialData = defaultTaskData }) {
             onTaskDataChange={onTaskDataChange}
             taskData={taskData}
          ></CheckListEditor>
+         <div className="flex justify-center">
+            <button className="mt-2 rounded-md bg-emerald-300 p-2 font-bold text--xl" type="submit">
+               Submit
+            </button>
+         </div>
       </form>
    );
 }

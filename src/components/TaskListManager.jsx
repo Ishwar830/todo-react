@@ -21,21 +21,26 @@ const sortFn = {
    date: (taskA, taskB) => taskB.dueDate - taskA.dueDate,
 };
 
-function AddTaskButton() {
+function AddTaskButton({handleTaskFormData}) {
    const buttonLabel = 'Add Task';
    const butttonStyles =
-      'rounded-md shadow-md/40 shadow-gray-800 bg-slate-100 p-2 text-md transition-transform hover:scale-105 hover:bg-slate-300';
+      'rounded-md shadow-md/40 shadow-gray-800 bg-slate-100 p-2 text-md transition-transform hover:scale-105 hover:bg-slate-300 my-2';
    return (
       <DialogModalTriggerButton
          buttonLabel={buttonLabel}
          buttonStyles={butttonStyles}
       >
-         <TaskForm></TaskForm>
+         <TaskForm handleTaskFormData={handleTaskFormData}></TaskForm>
       </DialogModalTriggerButton>
    );
 }
 
-function TaskListManager({ taskList, onTaskSelect, onDeleteTask }) {
+function TaskListManager({
+   taskList,
+   onTaskSelect,
+   onDeleteTask,
+   handleTaskFormData,
+}) {
    const [modifierValues, setmodifierValues] = useState({
       searchString: '',
       sortOption: 'default',
@@ -57,7 +62,7 @@ function TaskListManager({ taskList, onTaskSelect, onDeleteTask }) {
                updateSearchString={updateSearchString}
                updateSortOption={updateSortOption}
             ></TaskListModifier>
-            <AddTaskButton></AddTaskButton>
+            <AddTaskButton handleTaskFormData={handleTaskFormData}></AddTaskButton>
             <TaskListView
                taskList={modifiedTaskList}
                onTaskSelect={onTaskSelect}

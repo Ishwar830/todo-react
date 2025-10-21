@@ -10,6 +10,7 @@ function MainPanel({
    onDeleteCategory,
    onDeleteTask,
    currentTaskList,
+   handleTaskFormData,
 }) {
    return (
       <>
@@ -23,6 +24,7 @@ function MainPanel({
                taskList={currentCategory.taskList}
                onTaskSelect={onTaskSelect}
                onDeleteTask={onDeleteTask}
+               handleTaskFormData={handleTaskFormData}
             ></TaskListManager>
          </div>
          <TaskOverviewPanel

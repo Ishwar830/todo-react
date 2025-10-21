@@ -4,6 +4,7 @@ import { useState } from 'react';
 import SidePanel from './components/SidePanel';
 import MainPanel from './components/MainPanel';
 import Category from './utils/category';
+import Task from './utils/task';
 
 function App() {
    const [categoryList, setCategoryList] = useImmer(dummyData);
@@ -29,14 +30,16 @@ function App() {
       setCurrentTaskID(taskID);
    }
 
-   function onDeleteTask(taskID){
-      const newTaskList = currentCategory.taskList.filter((task) => task.uid !== taskID);
+   function onDeleteTask(taskID) {
+      const newTaskList = currentCategory.taskList.filter(
+         (task) => task.uid !== taskID
+      );
       const newList = categoryList.map((category) => {
-         if(category.uid === currentCategory.uid){
+         if (category.uid === currentCategory.uid) {
             category.taskList = newTaskList;
          }
          return category;
-      })
+      });
       setCategoryList(newList);
    }
 
@@ -70,6 +73,26 @@ function App() {
       }
    }
 
+   function handleTaskFormData(formData) {
+      console.log(formData);
+      if (formData.initialData) {
+         const newTask = { ...formData.initialData, ...formData.newData };
+         const idx = currentTaskList((task) => task.uid === newTask.uid);
+         currentTaskList[idx] = newTask;
+         const newList = categoryList.map((category) => category);
+         setCategoryList(newList);
+      } else {
+         const newTask = new Task(formData.newData);
+         const newList = categoryList.map((category) => {
+            if (category.uid === currentCategoryID) {
+               category.taskList = [...category.taskList, newTask];
+            }
+            return category;
+         });
+         setCategoryList(newList);
+      }
+   }
+
    return (
       <div className="relative grid min-h-dvh grid-cols-[250px_1fr_300px]">
          <SidePanel
@@ -87,6 +110,7 @@ function App() {
             onDeleteCategory={onDeleteCategory}
             onDeleteTask={onDeleteTask}
             currentTaskList={currentTaskList}
+            handleTaskFormData={handleTaskFormData}
          ></MainPanel>
       </div>
    );
