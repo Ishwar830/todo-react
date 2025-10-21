@@ -74,12 +74,16 @@ function App() {
    }
 
    function handleTaskFormData(formData) {
-      console.log(formData);
       if (formData.initialData) {
          const newTask = { ...formData.initialData, ...formData.newData };
-         const idx = currentTaskList((task) => task.uid === newTask.uid);
-         currentTaskList[idx] = newTask;
-         const newList = categoryList.map((category) => category);
+         const newList = categoryList.map((category) => {
+            const newTaskList = category.taskList.map((task) => {
+               if (task.uid === newTask.uid) return newTask;
+               return task;
+            });
+            category.taskList = newTaskList;
+            return category;
+         });
          setCategoryList(newList);
       } else {
          const newTask = new Task(formData.newData);

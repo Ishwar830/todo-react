@@ -104,6 +104,7 @@ function TaskForm({ handleTaskFormData, initialData }) {
                id="task-name"
                value={taskData.name}
                onChange={(e) => onTaskDataChange({ name: e.target.value })}
+               required
             />
          </div>
          <div className="flex justify-between gap-2 bg-slate-200 p-2">

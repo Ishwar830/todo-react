@@ -67,6 +67,7 @@ function TaskListManager({
                taskList={modifiedTaskList}
                onTaskSelect={onTaskSelect}
                onDeleteTask={onDeleteTask}
+               handleTaskFormData={handleTaskFormData}
             ></TaskListView>
          </div>
       </>

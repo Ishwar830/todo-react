@@ -49,6 +49,7 @@ function CategoryForm({ handleCategoryFormData, initialData = null }) {
                id="category-name"
                name="category-name"
                className="mt-2 w-full border-2"
+               required
             />
          </div>
          <div className="flex gap-4">

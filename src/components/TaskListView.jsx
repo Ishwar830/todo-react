@@ -1,4 +1,24 @@
-function TaskItem({ task, onTaskSelect, onDeleteTask }) {
+import DialogModalTriggerButton from "./DialogModalTriggerButton";
+import TaskForm from "./TaskForm";
+
+function EditTaskButton({task, handleTaskFormData}){
+   const buttonLabel = 'Edit';
+   const butttonStyles = 'w-16 rounded-xs bg-gray-800 p-1 text-white';
+   return (
+      <DialogModalTriggerButton
+         buttonLabel={buttonLabel}
+         buttonStyles={butttonStyles}
+      >
+         <TaskForm
+            handleTaskFormData={handleTaskFormData}
+            initialData={task}
+         ></TaskForm>
+      </DialogModalTriggerButton>
+   );
+}
+
+
+function TaskItem({ task, onTaskSelect, onDeleteTask, handleTaskFormData }) {
    
    function handleTaskDelete(e){
       e.stopPropagation();
@@ -18,13 +38,18 @@ function TaskItem({ task, onTaskSelect, onDeleteTask }) {
                   type="checkbox"
                   name="taskProgress"
                   checked={task.isComplete}
+                  onClick={(e) =>{
+                     e.stopPropagation();
+                     handleTaskFormData({
+                        initialData: task,
+                        newData: {...task, isComplete:!task.isComplete}
+                     })
+                  }}
                />
                <span className="ml-1 text-xl">{task.name}</span>
             </div>
             <div className="flex gap-2">
-               <button className="w-16 rounded-xs bg-gray-800 p-1 text-white">
-                  Edit
-               </button>
+               <EditTaskButton task={task} handleTaskFormData={handleTaskFormData}></EditTaskButton>
                <button onClick={handleTaskDelete} className="w-16 rounded-xs bg-gray-800 p-1 text-white">
                   Delete
                </button>
@@ -38,13 +63,14 @@ function TaskItem({ task, onTaskSelect, onDeleteTask }) {
    );
 }
 
-function TaskListView({ taskList, onTaskSelect, onDeleteTask }) {
+function TaskListView({ taskList, onTaskSelect, onDeleteTask, handleTaskFormData }) {
    const listItems = taskList.map((task) => (
       <TaskItem
          key={task.uid}
          task={task}
          onTaskSelect={onTaskSelect}
          onDeleteTask={onDeleteTask}
+         handleTaskFormData={handleTaskFormData}
       ></TaskItem>
    ));
    return <ul className="grid gap-4">{listItems}</ul>;
