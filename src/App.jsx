@@ -29,6 +29,17 @@ function App() {
       setCurrentTaskID(taskID);
    }
 
+   function onDeleteTask(taskID){
+      const newTaskList = currentCategory.taskList.filter((task) => task.uid !== taskID);
+      const newList = categoryList.map((category) => {
+         if(category.uid === currentCategory.uid){
+            category.taskList = newTaskList;
+         }
+         return category;
+      })
+      setCategoryList(newList);
+   }
+
    function onDeleteCategory(categoryID) {
       const newList = categoryList.filter((cat) => cat.uid !== categoryID);
       if (!newList.length) {
@@ -60,7 +71,7 @@ function App() {
    }
 
    return (
-      <div className="grid h-dvh grid-cols-[250px_1fr_300px]">
+      <div className="relative grid min-h-dvh grid-cols-[250px_1fr_300px]">
          <SidePanel
             categoryList={categoryList}
             currentCategoryID={currentCategoryID}
@@ -74,6 +85,8 @@ function App() {
             currentCategory={currentCategory}
             currentTask={currentTask}
             onDeleteCategory={onDeleteCategory}
+            onDeleteTask={onDeleteTask}
+            currentTaskList={currentTaskList}
          ></MainPanel>
       </div>
    );

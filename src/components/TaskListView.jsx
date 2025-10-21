@@ -1,4 +1,10 @@
-function TaskItem({ task, onTaskSelect }) {
+function TaskItem({ task, onTaskSelect, onDeleteTask }) {
+   
+   function handleTaskDelete(e){
+      e.stopPropagation();
+      onDeleteTask(task.uid);
+   }
+   
    return (
       <li
          className="grid rounded-xl border-2 bg-neutral-100 p-4 shadow-md/20"
@@ -19,7 +25,7 @@ function TaskItem({ task, onTaskSelect }) {
                <button className="w-16 rounded-xs bg-gray-800 p-1 text-white">
                   Edit
                </button>
-               <button className="w-16 rounded-xs bg-gray-800 p-1 text-white">
+               <button onClick={handleTaskDelete} className="w-16 rounded-xs bg-gray-800 p-1 text-white">
                   Delete
                </button>
             </div>
@@ -32,12 +38,13 @@ function TaskItem({ task, onTaskSelect }) {
    );
 }
 
-function TaskListView({ taskList, onTaskSelect }) {
+function TaskListView({ taskList, onTaskSelect, onDeleteTask }) {
    const listItems = taskList.map((task) => (
       <TaskItem
          key={task.uid}
          task={task}
          onTaskSelect={onTaskSelect}
+         onDeleteTask={onDeleteTask}
       ></TaskItem>
    ));
    return <ul className="grid gap-4">{listItems}</ul>;

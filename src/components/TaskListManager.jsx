@@ -1,5 +1,7 @@
 import TaskListView from './TaskListView';
 import TaskListModifier from './TaskListModifier';
+import TaskForm from './TaskForm';
+import DialogModalTriggerButton from './DialogModalTriggerButton';
 import { useState } from 'react';
 
 const priorityWeight = {
@@ -10,7 +12,7 @@ const priorityWeight = {
 
 const sortFn = {
    alphabetical: (taskA, taskB) => {
-      if(taskA.name >= taskB.name) return 1;
+      if (taskA.name >= taskB.name) return 1;
       return -1;
    },
    default: () => 0,
@@ -19,7 +21,21 @@ const sortFn = {
    date: (taskA, taskB) => taskB.dueDate - taskA.dueDate,
 };
 
-function TaskListManager({ taskList, onTaskSelect }) {
+function AddTaskButton() {
+   const buttonLabel = 'Add Task';
+   const butttonStyles =
+      'rounded-md shadow-md/40 shadow-gray-800 bg-slate-100 p-2 text-md transition-transform hover:scale-105 hover:bg-slate-300';
+   return (
+      <DialogModalTriggerButton
+         buttonLabel={buttonLabel}
+         buttonStyles={butttonStyles}
+      >
+         <TaskForm></TaskForm>
+      </DialogModalTriggerButton>
+   );
+}
+
+function TaskListManager({ taskList, onTaskSelect, onDeleteTask }) {
    const [modifierValues, setmodifierValues] = useState({
       searchString: '',
       sortOption: 'default',
@@ -33,7 +49,7 @@ function TaskListManager({ taskList, onTaskSelect }) {
    const modifiedTaskList = taskList
       .filter((task) => task.name.includes(modifierValues.searchString))
       .toSorted(sortFn[modifierValues.sortOption]);
-   
+
    return (
       <>
          <div>
@@ -41,9 +57,11 @@ function TaskListManager({ taskList, onTaskSelect }) {
                updateSearchString={updateSearchString}
                updateSortOption={updateSortOption}
             ></TaskListModifier>
+            <AddTaskButton></AddTaskButton>
             <TaskListView
                taskList={modifiedTaskList}
                onTaskSelect={onTaskSelect}
+               onDeleteTask={onDeleteTask}
             ></TaskListView>
          </div>
       </>

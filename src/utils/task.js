@@ -5,7 +5,6 @@ class Task {
       dueDate: null,
       checkList: [],
       uid: null,
-      categoryID: null,
    };
 
    constructor(initialValues = {}) {
@@ -20,7 +19,6 @@ class Task {
       this.isComplete = finalValues.isComplete;
       this.dueDate = finalValues.dueDate;
       this.checkList = [...finalValues.checkList];
-      this.categoryUID = finalValues.categoryID;
    }
 
    toggleComplete() {

@@ -20,7 +20,7 @@ function CategoryForm({ handleCategoryFormData, initialData = null }) {
    }
 
    function handleFormSubmit() {
-      if (!categoryName) return;
+      if (!categoryName.trim()) return;
       const formData = {
          newData: {
             categoryName,
@@ -36,7 +36,7 @@ function CategoryForm({ handleCategoryFormData, initialData = null }) {
          onSubmit={handleFormSubmit}
          action="#"
          method="dialog"
-         className="grid h-[max-content] w-[250px] gap-4 rounded-xl border-2 bg-white p-5"
+         className="grid h-[max-content] w-[250px] gap-4 p-4"
       >
          <div>
             <label htmlFor="category-name" className="text-xl font-bold">

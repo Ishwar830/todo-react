@@ -8,6 +8,8 @@ function MainPanel({
    currentTask,
    handleCategoryFormData,
    onDeleteCategory,
+   onDeleteTask,
+   currentTaskList,
 }) {
    return (
       <>
@@ -20,11 +22,12 @@ function MainPanel({
             <TaskListManager
                taskList={currentCategory.taskList}
                onTaskSelect={onTaskSelect}
+               onDeleteTask={onDeleteTask}
             ></TaskListManager>
          </div>
          <TaskOverviewPanel
-            category={currentCategory}
             task={currentTask}
+            currentTaskList={currentTaskList}
          ></TaskOverviewPanel>
       </>
    );

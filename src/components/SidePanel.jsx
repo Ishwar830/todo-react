@@ -5,7 +5,7 @@ import DialogModalTriggerButton from './DialogModalTriggerButton';
 function AddCategoryButton({handleCategoryFormData}) {
    const buttonLabel = 'Add Category';
    const butttonStyles =
-      'rounded-md shadow-md/40 shadow-gray-800 bg-slate-100 p-2 text-xl transition-transform hover:scale-105 hover:bg-slate-300';
+      'rounded-md mt-4 shadow-md/40 shadow-gray-800 bg-slate-100 p-2 text-xl transition-transform hover:scale-105 hover:bg-slate-300';
    return (
       <DialogModalTriggerButton buttonLabel={buttonLabel} buttonStyles={butttonStyles}>
          <CategoryForm handleCategoryFormData={handleCategoryFormData}></CategoryForm>
@@ -22,7 +22,7 @@ function SidePanel({
    return (
       <>
          <aside className="bg-sky-600 shadow-xl/40">
-            <div className="mt-4 flex justify-center">
+            <div className="flex justify-center">
                <AddCategoryButton handleCategoryFormData={handleCategoryFormData}></AddCategoryButton>
             </div>
             <CategoryList

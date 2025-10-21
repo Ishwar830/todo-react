@@ -25,14 +25,13 @@ function generateCheckList(size) {
    return Array.from({ length: size }, (_, i) => `Checkpoint ${i}`);
 }
 
-function generateTaskList(size, categoryID) {
+function generateTaskList(size) {
    const taskList = Array.from({ length: size }, (_, i) => {
       const task = new Task({
          name: generateRandomName(5),
          priority: priorities[Math.floor(Math.random() * priorities.length)],
          isComplete: i % 3 === 0,
          checkList: generateCheckList(Math.floor(Math.random() * size)),
-         categoryID,
          dueDate: randomDate(),
       });
       return task;
@@ -47,8 +46,7 @@ function generateCategoryList(size) {
          name: `Category-${i}`,
       });
       category.taskList = generateTaskList(
-         Math.floor(Math.random() * size),
-         category.uid
+         Math.floor(Math.random() * size)
       );
       return category;
    });

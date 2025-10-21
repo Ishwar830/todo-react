@@ -3,9 +3,9 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function OverviewChart({ category }) {
-   const completedTaskCount = category.getCompletedTaskCount();
-   const dueTaskCount = category.taskList.length - completedTaskCount;
+function OverviewChart({ currentTaskList}) {
+   const completedTaskCount = currentTaskList.filter((task) => task.isComplete).length
+   const dueTaskCount = currentTaskList.length - completedTaskCount;
    const chartData = {
       labels: ["Completed", "Due"],
       datasets: [
