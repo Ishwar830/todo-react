@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { DispatchContext } from './Contexts';
+import { ACTION_TYPES } from '../utils/actionTypes';
 
 function dateFormatter(dateObj) {
    dateObj = dateObj || new Date();
@@ -69,24 +71,26 @@ function CheckListEditor({ onTaskDataChange, taskData }) {
    );
 }
 
-function TaskForm({ handleTaskFormData, initialData }) {
+function TaskForm({ initialData }) {
+   const dispatch = useContext(DispatchContext);
    const data = initialData || defaultTaskData;
    const dataCopy = { ...data };
    dataCopy.checkList = [...data.checkList];
    
    const [taskData, setTaskData] = useState(dataCopy);
-
    function onTaskDataChange(newData) {
       setTaskData({ ...taskData, ...newData });
    }
 
    function handleFormSubmit(){
       if (!taskData.name.trim()) return;
-      const formData = {
-         newData: taskData,
-         initialData,
-      };
-      handleTaskFormData(formData);
+      const actionType = !initialData
+         ? ACTION_TYPES.ADD_TASK
+         : ACTION_TYPES.UPDATE_TASK;
+      dispatch({
+         type: actionType,
+         data: taskData,
+      });
    }
 
    return (
@@ -114,6 +118,7 @@ function TaskForm({ handleTaskFormData, initialData }) {
                onChange={(e) => onTaskDataChange({ priority: e.target.value })}
                name="task-priority"
                id="task-priority"
+               value={taskData.priority}
             >
                <option value="low">low</option>
                <option value="medium">medium</option>

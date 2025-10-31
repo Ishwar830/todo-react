@@ -1,7 +1,10 @@
+import { useContext } from 'react';
 import DialogModalTriggerButton from './DialogModalTriggerButton';
 import TaskForm from './TaskForm';
+import { DispatchContext } from './Contexts';
+import { ACTION_TYPES } from '../utils/actionTypes';
 
-function EditTaskButton({ task, handleTaskFormData }) {
+function EditTaskButton({ task }) {
    const buttonLabel = 'Edit';
    const butttonStyles = 'w-16 rounded-xs bg-gray-800 p-1 text-white';
    return (
@@ -9,33 +12,32 @@ function EditTaskButton({ task, handleTaskFormData }) {
          buttonLabel={buttonLabel}
          buttonStyles={butttonStyles}
       >
-         <TaskForm
-            handleTaskFormData={handleTaskFormData}
-            initialData={task}
-         ></TaskForm>
+         <TaskForm initialData={task}></TaskForm>
       </DialogModalTriggerButton>
    );
 }
 
-function TaskItem({ task, onTaskSelect, onDeleteTask, handleTaskFormData }) {
+function TaskItem({ task }) {
+   const dispatch = useContext(DispatchContext);
+
    const priorityThemeColors = {
       low: 'bg-emerald-100 text-emerald-700',
       medium: 'bg-amber-100 text-amber-700',
       high: 'bg-red-100 text-red-700',
    };
 
-   function handleTaskDelete(e) {
-      e.stopPropagation();
-      onDeleteTask(task.uid);
-   }
-
    return (
       <li
          className="grid gap-2 rounded-xl border-2 bg-neutral-100 p-4 shadow-md/20"
-         onClick={() => onTaskSelect(task.uid)}
+         onClick={() =>
+            dispatch({
+               type: ACTION_TYPES.TASK_SELECTED,
+               taskID: task.uid,
+            })
+         }
       >
          <div className="flex items-center justify-between gap-4">
-            <div className='flex items-center gap-4'>
+            <div className="flex items-center gap-4">
                <input
                   readOnly
                   className="size-6"
@@ -44,21 +46,26 @@ function TaskItem({ task, onTaskSelect, onDeleteTask, handleTaskFormData }) {
                   checked={task.isComplete}
                   onClick={(e) => {
                      e.stopPropagation();
-                     handleTaskFormData({
-                        initialData: task,
-                        newData: { ...task, isComplete: !task.isComplete },
+                     dispatch({
+                        type: ACTION_TYPES.TOGGLE_TASK_COMPLETION,
+                        taskID: task.uid,
                      });
                   }}
                />
-               <span className="text-2xl font-bold font-mono tracking-wide">{task.name}</span>
+               <span className="font-mono text-2xl font-bold tracking-wide">
+                  {task.name}
+               </span>
             </div>
             <div className="flex gap-2">
-               <EditTaskButton
-                  task={task}
-                  handleTaskFormData={handleTaskFormData}
-               ></EditTaskButton>
+               <EditTaskButton task={task}></EditTaskButton>
                <button
-                  onClick={handleTaskDelete}
+                  onClick={(e) => {
+                     e.stopPropagation();
+                     dispatch({
+                        type: ACTION_TYPES.DELETE_TASK,
+                        taskID: task.uid,
+                     });
+                  }}
                   className="w-16 rounded-xs bg-gray-800 p-1 text-white"
                >
                   Delete
@@ -68,7 +75,7 @@ function TaskItem({ task, onTaskSelect, onDeleteTask, handleTaskFormData }) {
          <div className="flex flex-wrap gap-4">
             <p>
                Priority:{' '}
-               <span className={priorityThemeColors[task.priority] + " p-1"}>
+               <span className={priorityThemeColors[task.priority] + ' p-1'}>
                   {task.priority}
                </span>
             </p>
@@ -83,20 +90,18 @@ function TaskItem({ task, onTaskSelect, onDeleteTask, handleTaskFormData }) {
    );
 }
 
-function TaskListView({
-   taskList,
-   onTaskSelect,
-   onDeleteTask,
-   handleTaskFormData,
-}) {
+function TaskListView({ taskList }) {
+   if(taskList.length == 0){
+      return (
+         <div className='flex-1 grid justify-center items-center text-2xl text-gray-700 font-bold'>
+            No Task in this category
+         </div>
+      );
+   }
+
+
    const listItems = taskList.map((task) => (
-      <TaskItem
-         key={task.uid}
-         task={task}
-         onTaskSelect={onTaskSelect}
-         onDeleteTask={onDeleteTask}
-         handleTaskFormData={handleTaskFormData}
-      ></TaskItem>
+      <TaskItem key={task.uid} task={task}></TaskItem>
    ));
    return (
       <ul className="grid flex-1 content-start gap-4 overflow-auto">

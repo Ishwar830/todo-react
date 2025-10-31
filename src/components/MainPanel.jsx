@@ -1,35 +1,30 @@
+import { useContext } from 'react';
 import CategoryInfo from './CategoryInfo';
 import TaskListManager from './TaskListManager';
 import TaskOverviewPanel from './TaskOverviewPanel';
+import { AppStateContext } from './Contexts';
 
-function MainPanel({
-   currentCategory,
-   onTaskSelect,
-   currentTask,
-   handleCategoryFormData,
-   onDeleteCategory,
-   onDeleteTask,
-   currentTaskList,
-   handleTaskFormData,
-}) {
+function MainPanel() {
+   const appState = useContext(AppStateContext);
+   const currentCategory = appState.categoryList.find(
+      (category) => category.uid === appState.currentCategoryID
+   );
+   const currentTask = currentCategory.taskList.find(
+      (task) => task.uid == appState.currentTaskID
+   );
+
    return (
       <>
-         <div className="flex flex-col p-5 h-dvh">
-            <CategoryInfo
-               category={currentCategory}
-               handleCategoryFormData={handleCategoryFormData}
-               onDeleteCategory={onDeleteCategory}
-            ></CategoryInfo>
+         <div className="flex h-dvh flex-col p-5">
+            <CategoryInfo category={currentCategory}></CategoryInfo>
             <TaskListManager
+               key={appState.currentCategoryID}
                taskList={currentCategory.taskList}
-               onTaskSelect={onTaskSelect}
-               onDeleteTask={onDeleteTask}
-               handleTaskFormData={handleTaskFormData}
             ></TaskListManager>
          </div>
          <TaskOverviewPanel
+            currentTaskList={currentCategory.taskList}
             task={currentTask}
-            currentTaskList={currentTaskList}
          ></TaskOverviewPanel>
       </>
    );

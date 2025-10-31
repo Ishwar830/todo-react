@@ -43,7 +43,7 @@ function generateTaskList(size) {
 function generateCategoryList(size) {
    const categoryList = Array.from({ length: size }, (_, i) => {
       const category = new Category({
-         name: `Category-${i}`,
+         title: `Category-${i}`,
       });
       category.taskList = generateTaskList(
          Math.floor(Math.random() * size)

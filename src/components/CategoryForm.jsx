@@ -1,34 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useImmer } from 'use-immer';
+import { useContext } from 'react';
+import { DispatchContext } from './Contexts';
+import { ACTION_TYPES } from '../utils/actionTypes';
 
-function CategoryForm({ handleCategoryFormData, initialData = null }) {
-   const [categoryName, setCategoryName] = useState('');
-   
-   useEffect(() => {
-      if (initialData) {
-         setCategoryName(initialData.category.name);
-      } else {
-         setCategoryName('');
-      }
-   }, [initialData]);
+const defaultData = {
+   title: '',
+};
+
+function CategoryForm({ initialData }) {
+   const data = initialData || defaultData;
+   const dataCopy = { ...data };
+   const [categoryData, setCategoryData] = useImmer(dataCopy);
+   const dispatch = useContext(DispatchContext);
 
    function handleInputChange(e) {
-      setCategoryName(e.target.value);
-   }
-
-   function resetFormData() {
-      setCategoryName('');
+      setCategoryData((draft) => {
+         draft.title = e.target.value;
+      });
    }
 
    function handleFormSubmit() {
-      if (!categoryName.trim()) return;
-      const formData = {
-         newData: {
-            categoryName,
-         },
-         initialData,
-      };
-      handleCategoryFormData(formData);
-      resetFormData();
+      const actionType = !initialData
+         ? ACTION_TYPES.ADD_CATEGORY
+         : ACTION_TYPES.UPDATE_CATEGORY;
+
+      dispatch({
+         type: actionType,
+         data: categoryData,
+      });
    }
 
    return (
@@ -44,7 +43,7 @@ function CategoryForm({ handleCategoryFormData, initialData = null }) {
             </label>
             <input
                onChange={handleInputChange}
-               value={categoryName}
+               value={categoryData.title}
                type="text"
                id="category-name"
                name="category-name"

@@ -1,14 +1,27 @@
-function Category({ category, currentCategoryID, onCategorySelect }) {
-   const isSelected = category.uid === currentCategoryID;
+import { useContext } from 'react';
+import { AppStateContext, DispatchContext } from './Contexts';
+import { ACTION_TYPES } from '../utils/actionTypes';
+
+function Category({ category }) {
+   const appState = useContext(AppStateContext);
+   const dispatch = useContext(DispatchContext);
+   const isSelected = category.uid === appState.currentCategoryID;
    const selectedCategoryStyles =
       'rounded-xl bg-amber-400 shadow-md/40 shadow-black';
 
    return (
       <li
-         onClick={() => onCategorySelect(category.uid)}
-         className={`flex overflow-hidden items-center justify-between gap-3 p-2 ${isSelected && selectedCategoryStyles}`}
+         onClick={() => {
+            dispatch({
+               type: ACTION_TYPES.CATEGORY_SELECTED,
+               categoryID: category.uid,
+            });
+         }}
+         className={`flex items-center justify-between gap-3 overflow-hidden p-2 ${isSelected && selectedCategoryStyles}`}
       >
-         <span className="flex-1 text-xl overflow-hidden text-ellipsis">{category.name}</span>
+         <span className="flex-1 overflow-hidden text-xl text-ellipsis">
+            {category.title}
+         </span>
          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white">
             {category.taskList.length}
          </span>
@@ -16,19 +29,13 @@ function Category({ category, currentCategoryID, onCategorySelect }) {
    );
 }
 
-function CategoryList({ onCategorySelect, categoryList, currentCategoryID }) {
-   const list = categoryList.map((category) => {
-      return (
-         <Category
-            key={category.uid}
-            category={category}
-            currentCategoryID={currentCategoryID}
-            onCategorySelect={onCategorySelect}
-         ></Category>
-      );
+function CategoryList() {
+   const appState = useContext(AppStateContext);
+   const list = appState.categoryList.map((category) => {
+      return <Category key={category.uid} category={category}></Category>;
    });
 
-   return <ul className="overflow-auto p-2 flex-1">{list}</ul>;
+   return <ul className="flex-1 overflow-auto p-2">{list}</ul>;
 }
 
 export default CategoryList;

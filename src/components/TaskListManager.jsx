@@ -2,7 +2,7 @@ import TaskListView from './TaskListView';
 import TaskListModifier from './TaskListModifier';
 import TaskForm from './TaskForm';
 import DialogModalTriggerButton from './DialogModalTriggerButton';
-import { useState } from 'react';
+import { useImmer } from 'use-immer';
 
 const priorityWeight = {
    high: 3,
@@ -21,7 +21,7 @@ const sortFn = {
    date: (taskA, taskB) => taskB.dueDate - taskA.dueDate,
 };
 
-function AddTaskButton({handleTaskFormData}) {
+function AddTaskButton() {
    const buttonLabel = 'Add Task';
    const butttonStyles =
       'self-start rounded-md m-2 shadow-md/40 shadow-slate-200 bg-emerald-400 p-2 text-md transition-transform hover:scale-105 hover:bg-emerald-500';
@@ -30,26 +30,25 @@ function AddTaskButton({handleTaskFormData}) {
          buttonLabel={buttonLabel}
          buttonStyles={butttonStyles}
       >
-         <TaskForm handleTaskFormData={handleTaskFormData}></TaskForm>
+         <TaskForm></TaskForm>
       </DialogModalTriggerButton>
    );
 }
 
-function TaskListManager({
-   taskList,
-   onTaskSelect,
-   onDeleteTask,
-   handleTaskFormData,
-}) {
-   const [modifierValues, setmodifierValues] = useState({
+function TaskListManager({ taskList }) {
+   const [modifierValues, setmodifierValues] = useImmer({
       searchString: '',
       sortOption: 'default',
    });
 
    const updateSearchString = (searchString) =>
-      setmodifierValues({ ...modifierValues, searchString });
+      setmodifierValues((draft) => {
+         draft.searchString = searchString;
+      });
    const updateSortOption = (sortOption) =>
-      setmodifierValues({ ...modifierValues, sortOption });
+      setmodifierValues((draft) => {
+         draft.sortOption = sortOption;
+      });
 
    const modifiedTaskList = taskList
       .filter((task) => task.name.includes(modifierValues.searchString))
@@ -57,18 +56,13 @@ function TaskListManager({
 
    return (
       <>
-         <div className='flex-1 flex flex-col overflow-hidden'>
+         <div className="flex flex-1 flex-col overflow-hidden">
             <TaskListModifier
                updateSearchString={updateSearchString}
                updateSortOption={updateSortOption}
             ></TaskListModifier>
-            <AddTaskButton handleTaskFormData={handleTaskFormData}></AddTaskButton>
-            <TaskListView
-               taskList={modifiedTaskList}
-               onTaskSelect={onTaskSelect}
-               onDeleteTask={onDeleteTask}
-               handleTaskFormData={handleTaskFormData}
-            ></TaskListView>
+            <AddTaskButton></AddTaskButton>
+            <TaskListView taskList={modifiedTaskList}></TaskListView>
          </div>
       </>
    );

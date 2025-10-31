@@ -1,3 +1,5 @@
+import { immerable } from "immer";
+
 class Task {
    static defaultValues = {
       priority: "low",
@@ -40,5 +42,7 @@ class Task {
       }
    }
 }
+
+Task[immerable] = true;
 
 export default Task;
